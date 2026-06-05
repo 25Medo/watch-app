@@ -1,0 +1,25 @@
+{
+  "expo": {
+    "name": "Watch",
+    "slug": "watch-app",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "resizeMode": "contain",
+      "backgroundColor": "#f7f3ec"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.watch.app"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#f7f3ec"
+      },
+      "package": "com.watch.app"
+    },
+    "platforms": ["ios", "android"]
+  }
+}
