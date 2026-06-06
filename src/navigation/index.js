@@ -75,7 +75,6 @@ function MainTabs({ navigation }) {
       />
       <Tab.Screen
         name="Report"
-        component={() => <View style={{ flex: 1 }} />}
         options={{
           tabBarLabel: '',
           tabBarIcon: () => null,
@@ -86,7 +85,9 @@ function MainTabs({ navigation }) {
             />
           ),
         }}
-      />
+      >
+        {() => <View style={{ flex: 1 }} />}
+      </Tab.Screen>
       <Tab.Screen
         name="You"
         component={ProfileScreen}

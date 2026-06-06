@@ -107,7 +107,7 @@ function SubRow({ zone, onToggleSub, onToggleWatch }) {
 
 // ── ProfileScreen ──────────────────────────────────────────────────────────
 export default function ProfileScreen() {
-  const { colors } = useTheme();
+  const { colors, mode, setOverride, clearThemePreference } = useTheme();
   const user = useStore(s => s.user);
   const zones = useStore(s => s.zones);
   const toggleSub = useStore(s => s.toggleSub);
@@ -191,6 +191,29 @@ export default function ProfileScreen() {
 
         {/* Privacy note */}
         <View style={{ paddingHorizontal: spacing.pad }}>
+          {/* Theme preference selector */}
+          <View style={{ marginBottom: 18 }}>
+            <Text style={{ fontSize: 13, fontWeight: '800', color: colors.ink, marginBottom: 8 }}>Appearance</Text>
+            <View style={{ flexDirection: 'row', gap: 8 }}>
+              {['system', 'light', 'dark'].map(opt => {
+                const active = (mode === 'light' && opt === 'light') || (mode === 'dark' && opt === 'dark') || (mode !== 'light' && mode !== 'dark' && opt === 'system');
+                return (
+                  <TouchableOpacity
+                    key={opt}
+                    onPress={() => setOverride(opt)}
+                    style={{
+                      paddingVertical: 8, paddingHorizontal: 12, borderRadius: radius.pill,
+                      backgroundColor: active ? colors.accent : colors.surfaceAlt,
+                      borderWidth: 1, borderColor: active ? colors.accentDeep : colors.line,
+                    }}
+                  >
+                    <Text style={{ color: active ? colors.onAccent : colors.ink, fontWeight: '700', textTransform: 'capitalize' }}>{opt}</Text>
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+          </View>
+
           <View style={{ flexDirection: 'row', alignItems: 'flex-start', gap: 8 }}>
             <Icon name="shield" size={14} color={colors.inkFaint} style={{ marginTop: 1 }} />
             <Text style={{ fontSize: 12, color: colors.inkFaint, flex: 1, lineHeight: 17 }}>
