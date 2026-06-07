@@ -4,18 +4,17 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useTheme } from '../theme/ThemeContext';
-import { radius } from '../theme';
 import Icon from '../components/Icon';
 import HomeScreen from '../screens/HomeScreen';
 import PatrolsScreen from '../screens/PatrolsScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import IncidentDetailScreen from '../screens/IncidentDetailScreen';
 import ReportScreen from '../screens/ReportScreen';
+import ZoneDiscoveryScreen from '../screens/ZoneDiscoveryScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
-// ── FAB in center of tab bar ───────────────────────────────────────────────
 function ReportFAB({ onPress, colors }) {
   return (
     <TouchableOpacity
@@ -36,13 +35,11 @@ function ReportFAB({ onPress, colors }) {
   );
 }
 
-// ── Main tab navigator ─────────────────────────────────────────────────────
 function MainTabs({ navigation }) {
-  const { colors, isDark } = useTheme();
-
+  const { colors } = useTheme();
   return (
     <Tab.Navigator
-      screenOptions={({ route }) => ({
+      screenOptions={{
         headerShown: false,
         tabBarStyle: {
           backgroundColor: colors.surface,
@@ -54,25 +51,13 @@ function MainTabs({ navigation }) {
         },
         tabBarActiveTintColor: colors.accent,
         tabBarInactiveTintColor: colors.inkFaint,
-        tabBarLabelStyle: {
-          fontSize: 10.5, fontWeight: '700',
-        },
-      })}
+        tabBarLabelStyle: { fontSize: 10.5, fontWeight: '700' },
+      }}
     >
-      <Tab.Screen
-        name="Home"
-        component={HomeScreen}
-        options={{
-          tabBarIcon: ({ color, size }) => <Icon name="home" size={22} color={color} />,
-        }}
-      />
-      <Tab.Screen
-        name="Patrols"
-        component={PatrolsScreen}
-        options={{
-          tabBarIcon: ({ color, size }) => <Icon name="route" size={22} color={color} />,
-        }}
-      />
+      <Tab.Screen name="Home" component={HomeScreen}
+        options={{ tabBarIcon: ({ color }) => <Icon name="home" size={22} color={color} /> }} />
+      <Tab.Screen name="Patrols" component={PatrolsScreen}
+        options={{ tabBarIcon: ({ color }) => <Icon name="route" size={22} color={color} /> }} />
       <Tab.Screen
         name="Report"
         component={() => <View style={{ flex: 1 }} />}
@@ -80,54 +65,34 @@ function MainTabs({ navigation }) {
           tabBarLabel: '',
           tabBarIcon: () => null,
           tabBarButton: () => (
-            <ReportFAB
-              colors={colors}
-              onPress={() => navigation.navigate('ReportModal')}
-            />
+            <ReportFAB colors={colors} onPress={() => navigation.navigate('ReportModal')} />
           ),
         }}
       />
-      <Tab.Screen
-        name="You"
-        component={ProfileScreen}
-        options={{
-          tabBarIcon: ({ color, size }) => <Icon name="person" size={22} color={color} />,
-        }}
-      />
+      <Tab.Screen name="You" component={ProfileScreen}
+        options={{ tabBarIcon: ({ color }) => <Icon name="person" size={22} color={color} /> }} />
     </Tab.Navigator>
   );
 }
 
-// ── Root stack ─────────────────────────────────────────────────────────────
 export default function AppNavigator() {
   const { colors, isDark } = useTheme();
-
   return (
     <NavigationContainer
       theme={{
         dark: isDark,
         colors: {
-          primary: colors.accent,
-          background: colors.bg,
-          card: colors.surface,
-          text: colors.ink,
-          border: colors.line,
-          notification: colors.accent,
+          primary: colors.accent, background: colors.bg,
+          card: colors.surface, text: colors.ink,
+          border: colors.line, notification: colors.accent,
         },
       }}
     >
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Main" component={MainTabs} />
-        <Stack.Screen
-          name="IncidentDetail"
-          component={IncidentDetailScreen}
-          options={{ presentation: 'card' }}
-        />
-        <Stack.Screen
-          name="ReportModal"
-          component={ReportScreen}
-          options={{ presentation: 'modal' }}
-        />
+        <Stack.Screen name="IncidentDetail" component={IncidentDetailScreen} options={{ presentation: 'card' }} />
+        <Stack.Screen name="ReportModal" component={ReportScreen} options={{ presentation: 'modal' }} />
+        <Stack.Screen name="ZoneDiscovery" component={ZoneDiscoveryScreen} options={{ presentation: 'card' }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
