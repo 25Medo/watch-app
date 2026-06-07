@@ -66,7 +66,7 @@ function SubRow({ zone, onToggleSub, onToggleWatch }) {
   );
 }
 
-// ── Feature 5: My Reports ─────────────────────────────────────────────────
+// ── My Reports row ────────────────────────────────────────────────────────
 function MyReportRow({ incident, onOpen }) {
   const { colors } = useTheme();
   const zone = useStore(s => s.zones.find(z => z.id === incident.zone));
@@ -102,7 +102,7 @@ function MyReportRow({ incident, onOpen }) {
 }
 
 export default function ProfileScreen({ navigation }) {
-  const { colors } = useTheme();
+  const { colors, mode, setOverride } = useTheme();
   const user = useStore(s => s.user);
   const zones = useStore(s => s.zones);
   const incidents = useStore(s => s.incidents);
@@ -145,13 +145,13 @@ export default function ProfileScreen({ navigation }) {
             <View style={{ flex: 1 }}>
               <Text style={{ fontSize: 14, fontWeight: '700', color: colors.ink, marginBottom: 4 }}>Community Trust Score</Text>
               <Text style={{ fontSize: 12.5, color: colors.inkSoft, lineHeight: 18 }}>
-                Accurate reports and confirmations raise your score. Flagged reports lower it. Higher scores give your reports more visibility.
+                Accurate reports and confirmations raise your score. Flagged reports lower it.
               </Text>
             </View>
           </View>
         </Card>
 
-        {/* ── Feature 5: My Reports ── */}
+        {/* My Reports */}
         {myReports.length > 0 && (
           <>
             <SectionHead title="My Reports" subtitle={`${myReports.length} submitted`} />
@@ -161,7 +161,7 @@ export default function ProfileScreen({ navigation }) {
           </>
         )}
 
-        {/* Subscriptions */}
+        {/* Zones */}
         <SectionHead
           title="Your Zones"
           subtitle={`${subscribedZones.length} subscribed`}
@@ -172,7 +172,6 @@ export default function ProfileScreen({ navigation }) {
           {subscribedZones.map(zone => (
             <SubRow key={zone.id} zone={zone} onToggleSub={toggleSub} onToggleWatch={toggleWatch} />
           ))}
-          {/* Discover CTA */}
           <TouchableOpacity
             onPress={() => navigation.navigate('ZoneDiscovery')}
             style={{ flexDirection: 'row', alignItems: 'center', gap: 10, paddingVertical: 14, paddingHorizontal: spacing.pad }}>
@@ -184,8 +183,23 @@ export default function ProfileScreen({ navigation }) {
           </TouchableOpacity>
         </Card>
 
-        {/* Privacy note */}
+        {/* Appearance + privacy */}
         <View style={{ paddingHorizontal: spacing.pad }}>
+          <Text style={{ fontSize: 13, fontWeight: '800', color: colors.ink, marginBottom: 8 }}>Appearance</Text>
+          <View style={{ flexDirection: 'row', gap: 8, marginBottom: 20 }}>
+            {['system', 'light', 'dark'].map(opt => {
+              const active = (mode === 'light' && opt === 'light') || (mode === 'dark' && opt === 'dark') || (mode !== 'light' && mode !== 'dark' && opt === 'system');
+              return (
+                <TouchableOpacity
+                  key={opt}
+                  onPress={() => setOverride(opt)}
+                  style={{ paddingVertical: 8, paddingHorizontal: 14, borderRadius: radius.pill, backgroundColor: active ? colors.accent : colors.surfaceAlt, borderWidth: 1, borderColor: active ? colors.accentDeep : colors.line }}>
+                  <Text style={{ color: active ? colors.onAccent : colors.ink, fontWeight: '700', textTransform: 'capitalize' }}>{opt}</Text>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+
           <View style={{ flexDirection: 'row', alignItems: 'flex-start', gap: 8 }}>
             <Icon name="shield" size={14} color={colors.inkFaint} style={{ marginTop: 1 }} />
             <Text style={{ fontSize: 12, color: colors.inkFaint, flex: 1, lineHeight: 17 }}>

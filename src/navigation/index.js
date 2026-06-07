@@ -60,7 +60,6 @@ function MainTabs({ navigation }) {
         options={{ tabBarIcon: ({ color }) => <Icon name="route" size={22} color={color} /> }} />
       <Tab.Screen
         name="Report"
-        component={() => <View style={{ flex: 1 }} />}
         options={{
           tabBarLabel: '',
           tabBarIcon: () => null,
@@ -68,7 +67,9 @@ function MainTabs({ navigation }) {
             <ReportFAB colors={colors} onPress={() => navigation.navigate('ReportModal')} />
           ),
         }}
-      />
+      >
+        {() => <View style={{ flex: 1 }} />}
+      </Tab.Screen>
       <Tab.Screen name="You" component={ProfileScreen}
         options={{ tabBarIcon: ({ color }) => <Icon name="person" size={22} color={color} /> }} />
     </Tab.Navigator>
